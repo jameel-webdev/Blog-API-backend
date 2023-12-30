@@ -7,7 +7,7 @@ const categorySchema = new mongoose.Schema(
       ref: "User",
       required: [true, "User is required"],
     },
-    title: {
+    category: {
       type: String,
       required: true,
     },
