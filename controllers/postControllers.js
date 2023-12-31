@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import Post from "../model/postModel.js";
 import User from "../model/userModel.js";
 
@@ -43,9 +44,10 @@ export const getPostById = async (req, res) => {
 
 // Update or Edit Blog-Post - PUT - api/v1/posts/:id
 export const updatePostById = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const findPost = await Post.findById(req.params.id);
   try {
-    const findPost = await Post.findById(req.params.id);
-    if (findPost) {
+    if (findPost && user._id.toString() === findPost.user.toString()) {
       const updatingPost = await Post.findByIdAndUpdate(
         req.params.id,
         { ...req.body },
@@ -55,6 +57,8 @@ export const updatePostById = async (req, res) => {
         updatingPost,
         message: "Post Updated Successfully👍",
       });
+    } else {
+      res.status(400).json({ message: "Read Only, Not Authorized" });
     }
   } catch (error) {
     res.status(500).json({ Error: error.message });
@@ -63,10 +67,22 @@ export const updatePostById = async (req, res) => {
 
 // Delete User Data - DELETE - api/v1/posts/:id
 export const deletePostById = async (req, res) => {
+  const user = await User.findById(req.user._id);
   try {
     const findPost = await Post.findById(req.params.id);
-    if (findPost) {
+    const userId = findPost.user;
+    const userFromPost = await User.findById(userId);
+    //Authentication
+    if (
+      findPost &&
+      (userFromPost._id.toString() === req.user._id.toString() || user.isAdmin)
+    ) {
       await Post.findByIdAndDelete(req.params.id);
+      const findPostIndex = userFromPost.posts
+        .map((postId) => postId.toString())
+        .findIndex((ele) => ele === findPost._id.toString());
+      userFromPost.posts.splice(findPostIndex, 1);
+      await user.save();
       res.status(200).json({
         message: "Post Deleted😒",
       });
