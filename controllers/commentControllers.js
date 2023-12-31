@@ -18,7 +18,6 @@ export const postComment = async (req, res) => {
   };
   try {
     if (post) {
-      // New Comment
       const newComment = await Comment.create({
         post,
         user: neededDetails,
