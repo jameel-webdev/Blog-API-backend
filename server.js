@@ -7,7 +7,7 @@ import { dbConnect } from "./config/dbConnect.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
+import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 // Assigning Port
 const port = process.env.PORT || 6500;
 
@@ -24,9 +24,12 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/post", postRoutes);
-app.use("/api/v1/comment", commentRoutes);
-app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/posts", postRoutes);
+app.use("/api/v1/comments", commentRoutes);
+
+// Error Middleware
+app.use(notFound);
+app.use(errorHandler);
 
 // Server Start
 app.get("/", (req, res) => {

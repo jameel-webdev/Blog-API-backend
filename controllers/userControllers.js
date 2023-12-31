@@ -74,8 +74,10 @@ export const logoutUser = async (req, res) => {
 };
 // Get All Users Data - GET - api/v1/users/all
 export const getAllUsers = async (req, res) => {
+  const allDatas = await User.find({});
   try {
     res.status(200).json({
+      allDatas,
       message: "All Users Data Retrived👍",
     });
   } catch (error) {
@@ -88,7 +90,7 @@ export const getAllUsers = async (req, res) => {
 // Get Single User Data - GET - api/v1/users/profile/:id
 export const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user._id);
     if (user) {
       res.status(200).json({
         user,
@@ -105,7 +107,7 @@ export const getUserById = async (req, res) => {
 // Update User Data - PUT - api/v1/users/profile/:id
 export const updateUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user._id);
     if (user) {
       user.firstName = req.body.firstName || user.firstName;
       user.lastName = req.body.lastName || user.lastName;
@@ -129,7 +131,7 @@ export const updateUserById = async (req, res) => {
 // Delete User Data - DELETE - api/v1/users/profile/:id
 export const deleteUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user._id);
     if (user) {
       await User.findByIdAndDelete(req.params.id);
       res.status(200).json({

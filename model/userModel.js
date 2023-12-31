@@ -28,10 +28,6 @@ const userSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
-    postCount: {
-      type: Number,
-      default: 0,
-    },
     role: {
       type: String,
       enum: ["Admin", "Guest", "Editor"],

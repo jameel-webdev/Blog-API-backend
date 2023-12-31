@@ -25,12 +25,12 @@ router.route("/logout").post(logoutUser);
 router.route("/all").get(adminProtect, getAllUsers);
 
 // Get Single User Data - GET - api/v1/users/profile/:id
-router.route("/profile/:id").get(protect, getUserById);
+router.route("/profile").get(protect, getUserById);
 
 // Update User Data - PUT - api/v1/users/profile/:id
-router.route("/profile/:id").put(protect, updateUserById);
+router.route("/profile").put(protect, updateUserById);
 
 // Delete User Data - DELETE - api/v1/users/profile/:id
-router.route("/profile/:id").delete(protect, deleteUserById);
+router.route("/profile").delete(protect, deleteUserById);
 
 export default router;

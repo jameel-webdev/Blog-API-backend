@@ -12,11 +12,6 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: [true, "Description is required"],
     },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: [true, "Post Category is required"],
-    },
     noOfViews: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -40,10 +35,10 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Author is required"],
     },
-    photo: {
-      type: String,
-      required: [true, "Post Image is required"],
-    },
+    // photo: {
+    //   type: String,
+    //   required: [true, "Post Image is required"],
+    // },
   },
   {
     timestamps: true,
