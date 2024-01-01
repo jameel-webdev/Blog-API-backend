@@ -27,14 +27,15 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/comments", commentRoutes);
 
+app.get("/", (req, res) => {
+  res.json({ message: `Welcome to Blog-API` });
+});
+
 // Error Middleware
 app.use(notFound);
 app.use(errorHandler);
 
 // Server Start
-app.get("/", (req, res) => {
-  res.json({ message: `Welcome to Blog-API` });
-});
 app.listen(port, () => {
   console.log(`Server Running on ${port}`);
 });
